@@ -1,0 +1,25 @@
+.home-page {
+    display: flex;
+    flex-direction: column;
+    /* Other styles for your home page */
+}
+  
+.vertical-section {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.vertical-section h2 {
+    text-align: center;
+}
+  
+.object-list {
+    width: 100%;
+    height: auto;
+    max-height: auto; 
+    overflow-y: auto;
+}

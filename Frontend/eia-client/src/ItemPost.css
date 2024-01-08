@@ -1,0 +1,34 @@
+.list-item {
+    max-width: 500px; /* Set a maximum width for the content */
+    margin: 0 auto; /* Center the content horizontally */
+    padding: 20px; /* Add some padding around the content */
+  
+    /* Create a window-like appearance */
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .list-item h3 {
+    text-align: center; /* Center the heading */
+  }
+  
+  .list-item img {
+    display: block; /* Ensure the image is a block element */
+    max-width: 100%; /* Make sure the image doesn't exceed its container */
+    margin: 15px auto; /* Center the image horizontally with some margin */
+  }
+  
+  .list-item p {
+    text-align: center; /* Center the paragraph content */
+  }
+  
+  .youtube-video {
+    text-align: center; /* Center the YouTube video */
+  }
+  
+  /* Responsive YouTube video */
+  .youtube-video iframe {
+    max-width: 100%; /* Ensure the video doesn't exceed its container */
+    height: 300px; /* Maintain aspect ratio */
+  }
