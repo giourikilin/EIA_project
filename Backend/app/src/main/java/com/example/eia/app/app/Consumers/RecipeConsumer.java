@@ -19,6 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class RecipeConsumer {
 
+    String API_KEY = null;
+
     @Autowired
     private RestTemplate restTemplate;
 
@@ -36,7 +38,7 @@ public class RecipeConsumer {
     }
 
     public ResponseEntity<?> makeRecipeCall(String query){
-        String apiUrl = "https://api.edamam.com/api/recipes/v2?type=public&beta=false&q="+ query +"&app_id=d1d245d5&app_key=ee77ae6d97499c7602a16f673f6e4fa0";
+        String apiUrl = "https://api.edamam.com/api/recipes/v2?type=public&beta=false&q="+ query +"&app_id=d1d245d5&app_key="+API_KEY;
         String response = restTemplate.getForObject(apiUrl, String.class);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

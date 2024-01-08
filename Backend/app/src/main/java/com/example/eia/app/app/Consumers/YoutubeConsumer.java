@@ -14,6 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class YoutubeConsumer {
 
+    String API_KEY = null;
+
     @Autowired
     private RestTemplate restTemplate;
 
@@ -23,7 +25,7 @@ public class YoutubeConsumer {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public ResponseEntity<?> makeYouTubeCall(String query){
-        String apiUrl = "https://www.googleapis.com/youtube/v3/search?key=AIzaSyAEIWIXKu0QWUP83yWI5FoDJ2xtsCmRYm0&part=snippet&type=video&q="+query;
+        String apiUrl = "https://www.googleapis.com/youtube/v3/search?key="+API_KEY+"&part=snippet&type=video&q="+query;
         String response = restTemplate.getForObject(apiUrl, String.class);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
