@@ -12,9 +12,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
-public class YoutubeConsumer {
+public class YoutubeAdapter {
 
-    String API_KEY = null;
+    String API_KEY = "AIzaSyC3xrvtbutXbt__arWWp0idwNbKZZnOlIc";
 
     @Autowired
     private RestTemplate restTemplate;

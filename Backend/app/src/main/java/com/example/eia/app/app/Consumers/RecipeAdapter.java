@@ -17,9 +17,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
-public class RecipeConsumer {
+public class RecipeAdapter {
 
-    String API_KEY = null;
+    String API_KEY = "27bbe8a5f41e9b888483a5bba7887871";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -71,3 +71,5 @@ public class RecipeConsumer {
         }
     }
 }
+
+

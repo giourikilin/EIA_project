@@ -48,17 +48,6 @@ const LoginForm = () => {
      catch (err) {
       alert(err);
     }
-
-    // if (navigator.geolocation) {
-    //   navigator.geolocation.getCurrentPosition((position) => {
-    //     localStorage.setItem("lat",position.coords.latitude)
-    //     localStorage.setItem("long", position.coords.longitude)
-    //   }, (error) => {
-    //     console.error("Error getting user's location:", error);
-    //   });
-    // } else {
-    //   console.log('Geolocation is not supported by this browser.');
-    // }
   }
 
   return (

@@ -1,34 +1,34 @@
 .list-item {
-    max-width: 500px; /* Set a maximum width for the content */
-    margin: 0 auto; /* Center the content horizontally */
-    padding: 20px; /* Add some padding around the content */
+    max-width: 600px; 
+    margin: 0 auto;
+    padding: 20px; 
   
-    /* Create a window-like appearance */
+    
     border: 2px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   
   .list-item h3 {
-    text-align: center; /* Center the heading */
+    text-align: center;
   }
   
   .list-item img {
-    display: block; /* Ensure the image is a block element */
-    max-width: 100%; /* Make sure the image doesn't exceed its container */
-    margin: 15px auto; /* Center the image horizontally with some margin */
+    display: block; 
+    max-width: 100%; 
+    margin: 15px auto; 
   }
   
   .list-item p {
-    text-align: center; /* Center the paragraph content */
+    text-align: center;
   }
   
   .youtube-video {
-    text-align: center; /* Center the YouTube video */
+    text-align: center; 
   }
   
-  /* Responsive YouTube video */
+
   .youtube-video iframe {
-    max-width: 100%; /* Ensure the video doesn't exceed its container */
-    height: 300px; /* Maintain aspect ratio */
+    max-width: 100%; 
+    height: 300px; 
   }

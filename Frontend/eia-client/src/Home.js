@@ -14,6 +14,16 @@ const Home = () => {
 
   const handleButtonClick = async () => {
     try {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          localStorage.setItem("lat",position.coords.latitude)
+          localStorage.setItem("long", position.coords.longitude)
+        }, (error) => {
+          console.error("Error getting user's location:", error);
+        });
+    } else {
+      console.log('Geolocation is not supported by this browser.');
+    } 
       console.log(searchTerm);
       const response = await axios.post("http://localhost:8080/searchPosts", {
         searchTerm: searchTerm,
@@ -37,10 +47,8 @@ const Home = () => {
   };
 
   useEffect(() => {
-    console.log(postdata.length); // Log the length of postdata when it changes
+    console.log(postdata.length);
   }, [postdata]);
-
-  // setPosts((prevData) => [...postdata, ...newData]);
 
   // useEffect(() => {
   //   async function fetchItems() {
