@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState} from 'react';
 import axios from 'axios';
 import './Home.css';
 import SearchBar from './SearchBar';
@@ -35,9 +35,9 @@ const Home = () => {
           pic: item.pic,
           ing: item.ing,
           vid_url: item.vid_url,
+          coord: { lat: parseFloat(localStorage.getItem("lat")), lng: parseFloat(localStorage.getItem("long")) }
         }));
         setPosts(postdata => [...postdata, ...newData]);
-
       } else {
         console.error('Received data is not an array or is empty:', response.data);
       }
@@ -45,10 +45,6 @@ const Home = () => {
       console.error('Error searching:', error);
     }
   };
-
-  useEffect(() => {
-    console.log(postdata.length);
-  }, [postdata]);
 
   // useEffect(() => {
   //   async function fetchItems() {
@@ -90,12 +86,11 @@ const Home = () => {
             <h2>Recipes</h2>
               <div className="object-list">
                 {postdata.map((item, index) => (
-                  <ItemPost key={index} item={item} />
+                  <ItemPost key={index} item={item}/>                  
                 ))}
               </div>
           </div>
       </div>
-      
     );
   };
   

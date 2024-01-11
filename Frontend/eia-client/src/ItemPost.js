@@ -1,10 +1,10 @@
 import React from 'react';
 import './ItemPost.css'
-import MapComponent from './MapComponent'; 
+import MapComponent from './MapComponent';
 
 const ListItem = ({ item }) => {
 
-  const { title, pic, ing, vid_url } = item;
+  const { title, pic, ing, vid_url, coord } = item;
 
   return (
     <div className="list-item">
@@ -26,11 +26,11 @@ const ListItem = ({ item }) => {
         </div>
       )}
 
-      
-        <div className="map-section">
-          <MapComponent mapCoordinates />
-        </div>
-      
+      {coord && (      
+      <div className="map-container">
+        <MapComponent userLocation={coord}/>
+      </div>)}
+
     </div>
   );
 };

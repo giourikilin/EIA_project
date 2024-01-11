@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class YoutubeAdapter {
 
-    String API_KEY = "AIzaSyC3xrvtbutXbt__arWWp0idwNbKZZnOlIc";
+    String API_KEY = "";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -24,10 +24,15 @@ public class YoutubeAdapter {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public ResponseEntity<?> makeYouTubeCall(String query){
-        String apiUrl = "https://www.googleapis.com/youtube/v3/search?key="+API_KEY+"&part=snippet&type=video&q="+query;
-        String response = restTemplate.getForObject(apiUrl, String.class);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<?> makeYouTubeCall(String query) {
+        try {
+            String apiUrl = "https://www.googleapis.com/youtube/v3/search?key="+API_KEY+"&part=snippet&type=video&q="+query;
+            String response = restTemplate.getForObject(apiUrl, String.class);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Failed to make YouTube call", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 
@@ -40,10 +45,15 @@ public class YoutubeAdapter {
     @JmsListener(destination = "to-yt-consumer-queue")
     public void processMessageFromQueue(VideoID message) {
         try {
-            ResponseEntity<?> videoResponse = makeYouTubeCall(message.getVideo_id().replaceAll("[\\s?.,@$&]+", ""));
+            String processed_title = message.getVideo_id().replaceAll("[\\s?.,@$&]+", "");
+            ResponseEntity<?> videoResponse = makeYouTubeCall(processed_title);
+            System.out.println(processed_title);
+            
             
             if (videoResponse.getStatusCode() == HttpStatus.OK) {
+                System.out.println(videoResponse.getStatusCode());
                 String respent = (String) videoResponse.getBody();
+                System.out.println(respent);
                 JsonNode jsonNode = objectMapper.readTree(respent);
                 String videoID = jsonNode.get("items").get(0).get("id").get("videoId").asText();
                 VideoID videoObj = new VideoID(message.getMsg_id(),videoID);
@@ -51,7 +61,7 @@ public class YoutubeAdapter {
                 sendMessageToAggregatorQ2(videoObj, "from-yt-consumer-queue");
             }
         } catch (Exception e) {
-            System.out.println("Error");
+            System.out.println("Error youtube adapter");
         }
         
     }

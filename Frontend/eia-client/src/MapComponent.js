@@ -1,107 +1,122 @@
-import React, {useEffect, useRef} from 'react';
-const mapCoordinates = {
-        lat: parseFloat(localStorage.getItem("lat")),
-        lng: parseFloat(localStorage.getItem("long")),
-      };
-  
-  window.initMap = () => {
-    const map = new window.google.maps.Map(document.getElementById('map'), {
-      center: mapCoordinates,
-      zoom: 12,
-      streetViewControl: false
-    });
-  
-    const service = new window.google.maps.places.PlacesService(map);
-    service.textSearch({
-      query: 'supermarket',
-      location: map.getCenter(),
-      radius: 3000
-    }, callback);
-  
-    function callback(results, status) {
-      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-        for (let i = 0; i < results.length; i++) {
-          createMarker(results[i]);
-        }
-      }
-    }
-  
-    const infoWindow = new window.google.maps.InfoWindow();
-  
-    function createMarker(place) {
-      const marker = new window.google.maps.Marker({
-        map: map,
-        position: place.geometry.location
-      });
-  
 
-      marker.addListener('click', () => {
-        const request = {
-          placeId: place.place_id, 
-          fields: ['name', 'formatted_address', 'rating', 'photos', 'website', 'opening_hours']
-        };
-  
-        service.getDetails(request, (placeDetails, status) => {
-          if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-            const photoUrl = placeDetails.photos && placeDetails.photos[0].getUrl({
-                maxWidth: 200, 
-                maxHeight: 150
-              });
+import React, { useEffect, useState } from 'react';
 
-              const openingHours = placeDetails.opening_hours
-              ? `<p>Opening Hours: ${placeDetails.opening_hours.weekday_text.join('<br>')}</p>`
-              : '';
-  
-              const storeWebsite = placeDetails.website
-              ? `<p><a href="${placeDetails.website}" target="_blank" rel="noopener noreferrer">Store Website</a></p>`
-              : '';
-  
-              const content = `
-              <div>
-                <h3>${placeDetails.name}</h3>
-                <p>${placeDetails.formatted_address}</p>
-                <p>Rating: ${placeDetails.rating || 'N/A'}</p>
-                ${openingHours}
-                ${storeWebsite}
-                ${photoUrl ? `<img src="${photoUrl}" alt="Place Photo" />` : ''}
-              </div>
-            `;
+const MapComponent = ({ userLocation }) => {
+  const [supermarkets, setSupermarkets] = useState([]);
+  const mapContainerRef = React.useRef(null);
+  const mapId = `map-${Math.random().toString(36).substring(7)}`;
 
-            infoWindow.setContent(content);
-            infoWindow.open(map, marker);
-          } else {
-            console.error('Error fetching place details:', status);
-          }
-        });
-      });
-    }
-  };
-  
-  const MapComponent = () => {
-    const mapRef = useRef(null);
-  
-    useEffect(() => {
-      const loadMap = () => {
-        const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyC3xrvtbutXbt__arWWp0idwNbKZZnOlIc&libraries=places&callback=initMap`;
-        script.async = true;
-        script.defer = true;
-        document.head.appendChild(script);
-        mapRef.current = window.initMap;
-      };
-  
-      loadMap();
-    }, [mapCoordinates]);
-  
-    useEffect(() => {
+  useEffect(() => {
+    if (window.google && window.google.maps) {
+      window.initMap();
+    } else {
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=MY-KEYYYYYY&libraries=places&callback=initMap`;
+      script.async = true;
+      script.defer = true;
+
+      document.head.appendChild(script);
+
+      script.addEventListener('load', window.initMap);
+
       return () => {
-        if (mapRef.current && mapRef.current.infoWindow) {
-          mapRef.current.infoWindow.close();
-        }
+        document.head.removeChild(script);
+        delete window.initMap;
       };
-    }, []);
+    }
+  }, [userLocation]);
+
+  useEffect(() => {
+    if (supermarkets.length > 0 && window.google) {
+      const map = new window.google.maps.Map(mapContainerRef.current, {
+        center: userLocation,
+        zoom: 15,
+        streetViewControl: false
+      });
+
+      const markers = [];
+
+      supermarkets.forEach(supermarket => {
+        const marker = new window.google.maps.Marker({
+          position: supermarket.geometry.location,
+          map,
+          title: supermarket.name,
+        });
+        markers.push(marker);
+
+        const infoWindow = new window.google.maps.InfoWindow();
+        const service = new window.google.maps.places.PlacesService(document.createElement('div'));
+
+        marker.addListener('click', () => {
+          const request = {
+            placeId: supermarket.place_id, 
+            fields: ['name', 'formatted_address', 'rating', 'photos', 'website', 'opening_hours']
+          };
+    
+          service.getDetails(request, (placeDetails, status) => {
+            if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+              const photoUrl = placeDetails.photos && placeDetails.photos[0].getUrl({
+                  maxWidth: 200, 
+                  maxHeight: 150
+                });
   
-    return <div id="map" style={{ height: '450px', width: '100%' }}></div>;
+                const openingHours = placeDetails.opening_hours
+                ? `<p>Opening Hours: ${placeDetails.opening_hours.weekday_text.join('<br>')}</p>`
+                : '';
+    
+                const storeWebsite = placeDetails.website
+                ? `<p><a href="${placeDetails.website}" target="_blank" rel="noopener noreferrer">Store Website</a></p>`
+                : '';
+    
+                const content = `
+                <div>
+                  <h3>${placeDetails.name}</h3>
+                  <p>${placeDetails.formatted_address}</p>
+                  <p>Rating: ${placeDetails.rating || 'N/A'}</p>
+                  ${openingHours}
+                  ${storeWebsite}
+                  ${photoUrl ? `<img src="${photoUrl}" alt="Place Photo" />` : ''}
+                </div>
+              `;
+  
+              infoWindow.setContent(content);
+              infoWindow.open(map, marker);
+            } else {
+              console.error('Error fetching place details:', status);
+            }
+          });
+        });
+
+
+      });
+
+
+    }
+  }, [userLocation, supermarkets]);
+
+  window.initMap = () => {
+    try {
+      const request = {
+        location: userLocation,
+        radius: 3000,
+        type: 'supermarket',
+      };
+
+      const service = new window.google.maps.places.PlacesService(document.createElement('div'));
+
+      service.nearbySearch(request, (results, status) => {
+        if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+          setSupermarkets(results);
+        } else {
+          console.error('Failed to fetch supermarkets:', status);
+        }
+      });
+    } catch (error) {
+      console.error('Error fetching supermarkets:', error);
+    }
   };
-  
-  export default MapComponent;
+
+  return <div ref={mapContainerRef} id={mapId} style={{ height: '450px', width: '100%' }} />;
+};
+
+export default MapComponent;

@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class RecipeAdapter {
 
-    String API_KEY = "27bbe8a5f41e9b888483a5bba7887871";
+    String API_KEY = "";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -67,7 +67,7 @@ public class RecipeAdapter {
                 sendMessageToQueue(responseMessage, "to-aggregator-queue");
             }
         } catch (Exception e) {
-            System.out.println("Error");
+            System.out.println("Error recipe adapter");
         }
     }
 }
