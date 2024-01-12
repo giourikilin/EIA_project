@@ -28,7 +28,7 @@ public class Config {
 
     @Bean
     public ConnectionFactory connectionFactory(){
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin","admin","tcp://localhost:61616");
+        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin","admin", "tcp://activemq:61616");
         connectionFactory.setTrustedPackages(Collections.singletonList("*"));
         return connectionFactory;
     }
