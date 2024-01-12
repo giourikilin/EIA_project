@@ -12,10 +12,7 @@ services:
     - ACTIVEMQ_NAME=activemq
     - ACTIVEMQ_USERNAME=admin
     - ACTIVEMQ_PASSWORD=admin
-    - ACTIVEMQ_SUNJMX_START="$ACTIVEMQ_SUNJMX_START -Dcom.sun.management.jmxremote.port=11099"
-    - ACTIVEMQ_SUNJMX_START="$ACTIVEMQ_SUNJMX_START -Dcom.sun.management.jmxremote.authenticate=false"
-    - ACTIVEMQ_SUNJMX_START="$ACTIVEMQ_SUNJMX_START -Dcom.sun.management.jmxremote.ssl=false"
-    - ACTIVEMQ_SUNJMX_START="$ACTIVEMQ_SUNJMX_START -Dcom.sun.management.jmxremote"
+    - ACTIVEMQ_SUNJMX_START=-Dcom.sun.management.jmxremote.port=11099 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote
     networks:
     - spring-cloud-network
 

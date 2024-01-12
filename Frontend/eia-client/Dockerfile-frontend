@@ -1,10 +1,18 @@
 FROM node:16.17.1-alpine
 ENV NODE_ENV=production
-COPY ["Frontend/eia-client/package.json", "Frontend/eia-client/package-lock.json*", "Frontend/eia-client/npm-shrinkwrap.json*", "./"]
-RUN npm install --production --silent && mv node_modules ../
-COPY . .
+RUN mkdir -p /opt/app
+WORKDIR /opt/app
+COPY ["Frontend/eia-client/package.json", "Frontend/eia-client/package-lock.json*", "Frontend/eia-client/npm-shrinkwrap.json*", "/opt/app/"]
+RUN npm install --production --silent && mv node_modules ./
+RUN npm i axios
+RUN npm i react-bootstrap
+RUN npm i @fortawesome/react-fontawesome
+RUN npm i @fortawesome/free-solid-svg-icons
+RUN npm i react-router-dom --save
+RUN nvm install lts/iron
+COPY /Frontend/eia-client/public /opt/app/public
+COPY /Frontend/eia-client/src /opt/app/src
 EXPOSE 3000
-RUN chown -R node /Frontend/eia-client
-WORKDIR Frontend/eia-client
-USER node
-CMD ["npm", "start"]
+# RUN chown -R node app
+# USER node
+CMD ["/bin/sh","-c","ls public; ls; npm start"]
