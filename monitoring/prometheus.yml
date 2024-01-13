@@ -1,0 +1,10 @@
+global:
+    scrape_interval: 15s
+    external_labels:
+        monitor: "activemq"
+
+scrape_configs:
+    - job_name: "activemq"
+      scrape_interval: 5s
+      static_configs:
+          - targets: ["activemq:8081"]

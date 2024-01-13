@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class RecipeAdapter {
 
-    String API_KEY = "27bbe8a5f41e9b888483a5bba7887871";
+    String API_KEY = "33c1f00f5bb8d915ca8b18bbaa2f7a18";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -38,7 +38,7 @@ public class RecipeAdapter {
     }
 
     public ResponseEntity<?> makeRecipeCall(String query){
-        String apiUrl = "https://api.edamam.com/api/recipes/v2?type=public&beta=false&q="+ query +"&app_id=d1d245d5&app_key="+API_KEY;
+        String apiUrl = "https://api.edamam.com/api/recipes/v2?type=public&beta=false&q="+ query +"&app_id=6f997404&app_key="+API_KEY;
         String response = restTemplate.getForObject(apiUrl, String.class);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -67,7 +67,7 @@ public class RecipeAdapter {
                 sendMessageToQueue(responseMessage, "to-aggregator-queue");
             }
         } catch (Exception e) {
-            System.out.println("Error");
+            System.out.println(e.getMessage());
         }
     }
 }

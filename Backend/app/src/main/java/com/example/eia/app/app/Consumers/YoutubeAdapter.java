@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class YoutubeAdapter {
 
-    String API_KEY = "AIzaSyC3xrvtbutXbt__arWWp0idwNbKZZnOlIc";
+    String API_KEY = "AIzaSyB5OZ6TXEppa026Ght1JcwOlnX7ZGvdgOQ";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -51,7 +51,7 @@ public class YoutubeAdapter {
                 sendMessageToAggregatorQ2(videoObj, "from-yt-consumer-queue");
             }
         } catch (Exception e) {
-            System.out.println("Error");
+            System.out.println(e.getMessage());
         }
         
     }
