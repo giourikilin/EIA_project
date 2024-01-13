@@ -78,7 +78,7 @@ public class Controller {
             messageProducer.sendMessageToTopic(userIdRequest);
             List<ResponseMessage> res = new ArrayList<>();
             try {
-                latch.await(5, TimeUnit.SECONDS);
+                latch.await(6, TimeUnit.SECONDS);
                 ResponseMessage rp = this.rM;
                 res.add(rp);
                 rM = null;

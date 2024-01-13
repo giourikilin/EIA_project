@@ -39,7 +39,7 @@ public class Aggregator {
             }
             
         } catch (Exception e) {
-            System.out.println("Error");
+            System.out.println("Error agg from youtube reading queue");
         }
     }
 
@@ -52,7 +52,7 @@ public class Aggregator {
             VideoID videoObj = new VideoID(message.getMsg_id(), message.getTitle());
             sendMessageToYTconsumer(videoObj, "to-yt-consumer-queue");
         } catch (Exception e) {
-            System.out.println("Error");
+            System.out.println("Error agg reading from recipe queue");
         }
     }
     
