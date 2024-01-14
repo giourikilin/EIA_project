@@ -50,6 +50,7 @@ public class YoutubeAdapter {
     
     @JmsListener(destination = "to-yt-consumer-queue")
     public void processMessageFromQueue(VideoID message) {
+        System.out.println("Youtube Adapter received message");
         try {
             String processed_title = message.getVideo_id().replaceAll("[\\s?.,@$&]+", "");
             ResponseEntity<?> videoResponse = makeYouTubeCall(processed_title);

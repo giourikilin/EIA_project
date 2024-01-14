@@ -19,6 +19,7 @@ public class MonitorAdapter {
 
     @JmsListener(destination = "topic.control-bus", containerFactory = "jmsControlBus")
     public void processLogMessage(LogMessage message) {
+        System.out.println("Monitor Adapter received Request");
         List<String> history = message.getHistory();
         history.add(COMPONENT_NAME);
         Log log = new Log(0L,message.getType(), history.toString(), message.getMessage(), message.isTestMessage());

@@ -25,14 +25,19 @@ public class TestMessageService {
         switch (destination){
             case "producer":
                 testProducer();
+                break;
             case "monitor adapter":
                 testMonitorAdapter();
+                break;
             case "recipe adapter":
                 testRecipeAdapter();
+                break;
             case "youtube adapter":
                 testYoutubeAdapter();
+                break;
             case "aggregator":
                 testAggregator();
+                break;
         }
         return testDTO;
     }
@@ -53,6 +58,7 @@ public class TestMessageService {
         LogMessage request = new LogMessage("monitor test message",0L, new ArrayList<>() );
         request.setTestMessage(true);
         // send message
+        System.out.println("Testing Monitor Adapter");
         try{
             sendMessageToQueue(request, "topic.control-bus");
         } catch (Exception e){

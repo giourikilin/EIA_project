@@ -52,6 +52,7 @@ public class RecipeAdapter {
     
     @JmsListener(destination = "topic.compositeMsg2", containerFactory = "jmsTCFrecipe")
     public void processRecipeMessage(RequestMessage message) {
+        System.out.println("Recipe Adapter received message");
         try {
             ResponseEntity<?> recipeResponse = makeRecipeCall(message.getTerm());
             if (recipeResponse.getStatusCode() == HttpStatus.OK) {
