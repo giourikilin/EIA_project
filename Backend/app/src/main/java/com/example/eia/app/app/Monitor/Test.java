@@ -11,9 +11,8 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="log")
-public class Log {
-
+@Table(name="test")
+public class Test {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,6 +22,4 @@ public class Log {
     private String history;
     @Column(name = "content", nullable = false)
     private String content;
-    @Column(name = "is_test", nullable = false)
-    private Boolean isTest;
 }

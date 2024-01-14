@@ -12,4 +12,5 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Message implements Serializable {
     protected String type;
+    protected boolean isTestMessage;
 }

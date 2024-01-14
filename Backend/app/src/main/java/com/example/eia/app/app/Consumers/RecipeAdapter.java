@@ -72,6 +72,8 @@ public class RecipeAdapter {
                 List<String> history = message.getHistory();
                 history.add(COMPONENT_NAME);
                 responseMessage = new ResponseMessage(message.getId(), title, picture, ingridients, null, history);
+                responseMessage.setTestMessage(message.isTestMessage());
+                responseMessage.setType("Response message");
                 sendMessageToQueue(responseMessage, "to-aggregator-queue");
                 sendMessageToQueue(new LogMessage(responseMessage), "topic.control-bus");
             }

@@ -24,6 +24,7 @@ public class LogMessage extends Message implements Serializable {
         this.message = message.getMessage();
         this.id = message.getUid();
         this.history = message.getHistory();
+        this.isTestMessage = message.isTestMessage();
     }
 
     public LogMessage(RequestMessage message){
@@ -31,18 +32,21 @@ public class LogMessage extends Message implements Serializable {
         this.message = message.getTerm();
         this.id = 1L;
         this.history = message.getHistory();
+        this.isTestMessage = message.isTestMessage();
     }
 
     public LogMessage(ResponseMessage message){
         this.type = "Response Message";
         this.message = message.getTitle() + " " + message.getVid_url();
         this.history = message.getHistory();
+        this.isTestMessage = message.isTestMessage();
     }
 
     public LogMessage(VideoID message){
-        this.type = "Video ID";
+        this.type = "Video ID Message";
         this.message = message.getVideo_id();
         this.history = message.getHistory();
+        this.isTestMessage = message.isTestMessage();
     }
 }
 

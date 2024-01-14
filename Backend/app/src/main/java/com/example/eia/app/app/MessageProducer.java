@@ -30,7 +30,6 @@ public class MessageProducer {
         List<String> history = new ArrayList<>();
         history.add(COMPONENT_NAME);
         requestMessage = new RequestMessage(messageId, content.getSearchTerm(), history);
-
         jmsTemplate.convertAndSend("topic.compositeMsg2", requestMessage);
         jmsTemplate.convertAndSend("topic.control-bus", new LogMessage(requestMessage));
     }

@@ -1,5 +1,7 @@
 package com.example.eia.app.app.Controllers;
 
+import com.example.eia.app.app.Monitor.TestDTO;
+import com.example.eia.app.app.Monitor.TestMessageService;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.eia.app.app.MessageProducer;
@@ -22,15 +24,17 @@ import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-
+@CrossOrigin(value = "*")
 @RestController
-@CrossOrigin("*")
+
 public class Controller {
 
     @Autowired
     private UserService userService;
     @Autowired
     private PostService postService;
+    @Autowired
+    private TestMessageService testMessageService;
 
     @Autowired
     private MessageProducer messageProducer;
@@ -38,6 +42,7 @@ public class Controller {
     private ResponseMessage rM;
 
     private final CountDownLatch latch = new CountDownLatch(1);
+
 
 
     @JmsListener(destination = "from-agg-to-controller-queue")
@@ -50,10 +55,10 @@ public class Controller {
         }
     }
 
-    @PostMapping("/control")
-    public ResponseEntity<?> produceControlMessage(@RequestBody UserDTO userDTO){
-        UserDTO savedUser = userService.saveUser(userDTO);
-        return ResponseEntity.ok(savedUser);
+    @PostMapping("/test")
+    public ResponseEntity<?> produceTestMessage(@RequestBody TestDTO testDTO){
+        TestDTO test = testMessageService.sendMessage(testDTO);
+        return ResponseEntity.ok(test);
     }
 
     @PostMapping("/signup")
@@ -62,11 +67,13 @@ public class Controller {
         return ResponseEntity.ok(savedUser);
     }
 
+
     @PostMapping(path = "/login")
     public ResponseEntity<?> loginUserEntity(@RequestBody UserLoginDTO userloginDTO){
         DataResponse dataResponse = userService.loginUser(userloginDTO);
         return ResponseEntity.ok(dataResponse);
     }
+
 
     @PostMapping(path = "/loadposts")
     public ResponseEntity<?> loadPostsUser(@RequestBody UserIdRequest userIdRequest) {
@@ -74,6 +81,7 @@ public class Controller {
         List<PostItem> postItems = postService.getPostsByUid(user_id);
         return ResponseEntity.ok(postItems);
     }
+
 
     @PostMapping(path = "/searchPosts")
     public ResponseEntity<?> searchForRecipes(@RequestBody UserIdRequest userIdRequest) {

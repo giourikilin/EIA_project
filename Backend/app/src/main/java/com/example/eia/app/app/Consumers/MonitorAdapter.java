@@ -21,7 +21,7 @@ public class MonitorAdapter {
     public void processLogMessage(LogMessage message) {
         List<String> history = message.getHistory();
         history.add(COMPONENT_NAME);
-        Log log = new Log(0L,message.getType(), history.toString(), message.getMessage());
+        Log log = new Log(0L,message.getType(), history.toString(), message.getMessage(), message.isTestMessage());
         try{
             logRepo.save(log);
         } catch(Exception e){

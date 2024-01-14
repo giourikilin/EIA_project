@@ -65,6 +65,8 @@ public class YoutubeAdapter {
                 List<String> history = message.getHistory();
                 history.add(COMPONENT_NAME);
                 VideoID videoObj = new VideoID(message.getMsg_id(),videoID, history);
+                videoObj.setTestMessage(message.isTestMessage());
+                videoObj.setType("VideoID Message");
                 System.out.println("Youtube consumer made call and got "+videoID);
                 sendMessageToQueue(videoObj, "from-yt-consumer-queue");
                 sendMessageToQueue(new LogMessage(videoObj), "topic.control-bus");
