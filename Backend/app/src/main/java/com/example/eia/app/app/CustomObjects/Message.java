@@ -5,17 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Getter
+import java.io.Serializable;
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DataResponse extends Message{
-
-    private String message;
-    private Long uid;
-    private List<String> history = new ArrayList<>();
-
+public class Message implements Serializable {
+    protected String type;
 }

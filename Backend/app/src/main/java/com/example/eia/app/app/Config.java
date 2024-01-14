@@ -77,4 +77,13 @@ public class Config {
 		return factory;
 	}
 
+    @Bean(name = "jmsControlBus")
+    public JmsListenerContainerFactory<?> jmsControlBus(ConnectionFactory connectionFactory, DefaultJmsListenerContainerFactoryConfigurer configurer ) {
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        configurer.configure( factory, connectionFactory );
+        factory.setConnectionFactory(connectionFactory);
+        factory.setSubscriptionDurable(true);
+        factory.setClientId("controlBus");
+        return factory;
+    }
 }

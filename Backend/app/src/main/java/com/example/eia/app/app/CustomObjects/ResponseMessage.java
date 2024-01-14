@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -13,10 +14,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class ResponseMessage implements Serializable{
+public class ResponseMessage extends Message implements Serializable{
     private String msg_id;
     private String title;
     private String pic;
     private List<String> ing;
     private String vid_url;
+    private List<String> history;
 }

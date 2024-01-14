@@ -1,6 +1,7 @@
 package com.example.eia.app.app;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class Aggregator {
     @Autowired
     private JmsTemplate jmsTemplate;
 
-    
+    private final String COMPONENT_NAME = "aggregator";
     public void sendMessageToYTconsumer(VideoID message, String queueName) {
         jmsTemplate.convertAndSend(queueName, message);
     }
@@ -49,7 +50,9 @@ public class Aggregator {
         try {
             System.out.println("Agg got from Recipe consumer title"+message.getTitle());
             messageBuffer.put(message.getMsg_id(), message);
-            VideoID videoObj = new VideoID(message.getMsg_id(), message.getTitle());
+            List<String> history = message.getHistory();
+            history.add(COMPONENT_NAME);
+            VideoID videoObj = new VideoID(message.getMsg_id(), message.getTitle(), history);
             sendMessageToYTconsumer(videoObj, "to-yt-consumer-queue");
         } catch (Exception e) {
             System.out.println("Error agg reading from recipe queue");

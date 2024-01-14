@@ -1,4 +1,6 @@
 package com.example.eia.app.app.Consumers;
+import com.example.eia.app.app.CustomObjects.Message;
+import com.example.eia.app.app.Monitor.LogMessage;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,8 @@ import org.springframework.jms.core.JmsTemplate;
 import com.example.eia.app.app.CustomObjects.VideoID;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.List;
 
 @Component
 public class YoutubeAdapter {
@@ -24,6 +28,8 @@ public class YoutubeAdapter {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    private final String COMPONENT_NAME = "youtube adapter";
+
     public ResponseEntity<?> makeYouTubeCall(String query) {
         try {
             String apiUrl = "https://www.googleapis.com/youtube/v3/search?key="+API_KEY+"&part=snippet&type=video&q="+query;
@@ -36,7 +42,7 @@ public class YoutubeAdapter {
     }
 
 
-    public void sendMessageToAggregatorQ2(VideoID message, String queueName) {
+    public void sendMessageToQueue(Message message, String queueName) {
         jmsTemplate.convertAndSend(queueName, message);
     }
 
@@ -56,9 +62,13 @@ public class YoutubeAdapter {
                 System.out.println(respent);
                 JsonNode jsonNode = objectMapper.readTree(respent);
                 String videoID = jsonNode.get("items").get(0).get("id").get("videoId").asText();
-                VideoID videoObj = new VideoID(message.getMsg_id(),videoID);
+                List<String> history = message.getHistory();
+                history.add(COMPONENT_NAME);
+                VideoID videoObj = new VideoID(message.getMsg_id(),videoID, history);
                 System.out.println("Youtube consumer made call and got "+videoID);
-                sendMessageToAggregatorQ2(videoObj, "from-yt-consumer-queue");
+                sendMessageToQueue(videoObj, "from-yt-consumer-queue");
+                sendMessageToQueue(new LogMessage(videoObj), "topic.control-bus");
+
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());

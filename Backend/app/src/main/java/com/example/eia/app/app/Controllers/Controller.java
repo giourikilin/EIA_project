@@ -50,6 +50,11 @@ public class Controller {
         }
     }
 
+    @PostMapping("/control")
+    public ResponseEntity<?> produceControlMessage(@RequestBody UserDTO userDTO){
+        UserDTO savedUser = userService.saveUser(userDTO);
+        return ResponseEntity.ok(savedUser);
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO){
@@ -75,6 +80,7 @@ public class Controller {
         String searchString = userIdRequest.getSearchTerm();
         System.out.println(searchString);
         if (searchString != null){
+            messageProducer.sendMessageToTopic(userIdRequest);
             messageProducer.sendMessageToTopic(userIdRequest);
             List<ResponseMessage> res = new ArrayList<>();
             try {

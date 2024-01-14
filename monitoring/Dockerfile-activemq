@@ -16,7 +16,7 @@ USER root
 RUN chmod 0644 /$AGENT && if [ "$AGENT_SHA512" != "$(cd / && sha512sum $AGENT | awk '{print($1)}')" ]; then \
         echo "Agent sha512 value doesn't match! exiting."  && exit 1; \
     fi
-COPY activemq-monitoring/$AGENT_CONFIG /
+COPY monitoring/$AGENT_CONFIG /
 
 USER activemq
 WORKDIR $ACTIVEMQ_HOME

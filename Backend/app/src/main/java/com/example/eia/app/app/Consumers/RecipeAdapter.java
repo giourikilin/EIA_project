@@ -3,6 +3,8 @@ package com.example.eia.app.app.Consumers;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.eia.app.app.CustomObjects.Message;
+import com.example.eia.app.app.Monitor.LogMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,9 +33,14 @@ public class RecipeAdapter {
     private ResponseMessage responseMessage;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final String COMPONENT_NAME = "recipe adapter";
 
 
-    public void sendMessageToQueue(ResponseMessage message, String queueName) {
+    public void sendMessageToQueue(Message message, String queueName) {
+        jmsTemplate.convertAndSend(queueName, message);
+    }
+
+    public void sendMessageToTopic(Message message, String queueName) {
         jmsTemplate.convertAndSend(queueName, message);
     }
 
@@ -62,9 +69,11 @@ public class RecipeAdapter {
                     }
                 }
                 System.out.println("Food title Recipe consumer from edam"+ title);
-
-                responseMessage = new ResponseMessage(message.getId(), title, picture, ingridients, null);
+                List<String> history = message.getHistory();
+                history.add(COMPONENT_NAME);
+                responseMessage = new ResponseMessage(message.getId(), title, picture, ingridients, null, history);
                 sendMessageToQueue(responseMessage, "to-aggregator-queue");
+                sendMessageToQueue(new LogMessage(responseMessage), "topic.control-bus");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
