@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class YoutubeAdapter {
 
-    String API_KEY = "";
+    String API_KEY = "AIzaSyB6BioztfY7RHuPgHWknVHz9daP3GgfGgU";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -49,11 +49,8 @@ public class YoutubeAdapter {
             ResponseEntity<?> videoResponse = makeYouTubeCall(processed_title);
             System.out.println(processed_title);
             
-            
             if (videoResponse.getStatusCode() == HttpStatus.OK) {
-                System.out.println(videoResponse.getStatusCode());
                 String respent = (String) videoResponse.getBody();
-                System.out.println(respent);
                 JsonNode jsonNode = objectMapper.readTree(respent);
                 String videoID = jsonNode.get("items").get(0).get("id").get("videoId").asText();
                 VideoID videoObj = new VideoID(message.getMsg_id(),videoID);

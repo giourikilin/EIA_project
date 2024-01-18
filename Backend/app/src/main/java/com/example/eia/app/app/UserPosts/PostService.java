@@ -20,4 +20,13 @@ public class PostService {
             return null;
         }    
     }
+
+
+    public void savePostItem(PostItem postItem) {
+        if(postItem != null){
+            postsRepo.save(postItem);
+        } else {
+            System.out.println("Cant save recipe is null");
+        }
+    }
 }

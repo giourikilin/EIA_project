@@ -22,9 +22,7 @@ public class MessageProducer {
     public void sendMessageToTopic(UserIdRequest content) {
         
         String messageId = UUID.randomUUID().toString();
-        // requestMessage = new RequestMessage(messageId, content.getSearchTerm(), content.getLatitude(), content.getLongitude());
         requestMessage = new RequestMessage(messageId, content.getSearchTerm());
-
         jmsTemplate.convertAndSend("topic.compositeMsg2", requestMessage);
     }
 

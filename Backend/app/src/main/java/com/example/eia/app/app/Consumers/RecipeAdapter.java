@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class RecipeAdapter {
 
-    String API_KEY = "";
+    String API_KEY = "861fa829b578ab8094f3b29557ad6577";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -58,7 +58,7 @@ public class RecipeAdapter {
 
                 if (jsonNode.get("hits").get(0).get("recipe").get("ingredientLines").isArray()){
                     for(JsonNode item : jsonNode.get("hits").get(0).get("recipe").get("ingredientLines")){
-                        ingridients.add(item.asText());
+                        ingridients.add(item.asText()+" ,");
                     }
                 }
                 System.out.println("Food title Recipe consumer from edam"+ title);

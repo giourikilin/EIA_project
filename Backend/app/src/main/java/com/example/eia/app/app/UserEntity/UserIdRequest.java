@@ -12,7 +12,4 @@ import lombok.Setter;
 public class UserIdRequest{
     private Long user_id;
     private String searchTerm;
-    // private double longitude;
-    // private double latitude;
-
 }

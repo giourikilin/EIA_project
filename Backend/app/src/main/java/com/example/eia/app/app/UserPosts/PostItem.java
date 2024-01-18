@@ -17,16 +17,14 @@ import java.util.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collation = "posts")
+@Document(collection = "posts")
 public class PostItem implements Serializable{
 
     @Id
     private Long post_ID;
-
     private Long userID;
     private String title;
-    private String picture;
-    private List<String> ingredients;
-    private String video_url;
-    // private Pair<Double, Double> local_map;
+    private String pic;
+    private List<String> ing;
+    private String vid_url;
 }
