@@ -17,6 +17,4 @@ public class RequestMessage extends Message implements Serializable{
     private String id;
     private String term;
     private List<String> history;
-    // private double longitude;
-    // private double latitude;
 }

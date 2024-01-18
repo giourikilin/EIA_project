@@ -89,7 +89,7 @@ public class Controller {
         System.out.println(searchString);
         if (searchString != null){
             messageProducer.sendMessageToTopic(userIdRequest);
-            messageProducer.sendMessageToTopic(userIdRequest);
+            // messageProducer.sendMessageToTopic(userIdRequest);
             List<ResponseMessage> res = new ArrayList<>();
             try {
                 latch.await(6, TimeUnit.SECONDS);

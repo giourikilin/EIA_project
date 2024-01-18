@@ -11,7 +11,7 @@ const MapComponent = ({ userLocation }) => {
       window.initMap();
     } else {
       const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=MY-KEYYYYYY&libraries=places&callback=initMap`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyB6BioztfY7RHuPgHWknVHz9daP3GgfGgU&libraries=places&callback=initMap`;
       script.async = true;
       script.defer = true;
 

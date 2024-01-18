@@ -15,7 +15,7 @@ import com.example.eia.app.app.CustomObjects.ResponseMessage;
 import com.example.eia.app.app.CustomObjects.VideoID;
 
 @Component
-public class Aggregator {
+public class ComposedMessageProcessor {
 
     private final Map<String, ResponseMessage> messageBuffer = new HashMap<>();
 

@@ -62,17 +62,17 @@ public class RecipeAdapter {
             
                 String title = jsonNode.get("hits").get(0).get("recipe").get("label").asText();
                 String picture = jsonNode.get("hits").get(0).get("recipe").get("image").asText();
-                List<String> ingridients = new ArrayList<>();
+                List<String> ingredients = new ArrayList<>();
 
                 if (jsonNode.get("hits").get(0).get("recipe").get("ingredientLines").isArray()){
                     for(JsonNode item : jsonNode.get("hits").get(0).get("recipe").get("ingredientLines")){
-                        ingridients.add(item.asText());
+                        ingredients.add(item.asText());
                     }
                 }
                 System.out.println("Food title Recipe consumer from edam"+ title);
                 List<String> history = message.getHistory();
                 history.add(COMPONENT_NAME);
-                responseMessage = new ResponseMessage(message.getId(), title, picture, ingridients, null, history);
+                responseMessage = new ResponseMessage(message.getId(), title, picture, ingredients, null, history);
                 responseMessage.setTestMessage(message.isTestMessage());
                 responseMessage.setType("Response message");
                 sendMessageToQueue(responseMessage, "to-aggregator-queue");
