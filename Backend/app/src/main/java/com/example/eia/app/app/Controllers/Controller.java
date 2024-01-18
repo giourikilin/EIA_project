@@ -15,6 +15,7 @@ import com.example.eia.app.app.UserPosts.PostItem;
 import com.example.eia.app.app.UserPosts.PostService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -41,7 +42,7 @@ public class Controller {
 
     private ResponseMessage rM;
 
-    private final CountDownLatch latch = new CountDownLatch(1);
+    private final CountDownLatch latch = new CountDownLatch(6);
 
 
 
@@ -78,8 +79,22 @@ public class Controller {
     @PostMapping(path = "/loadposts")
     public ResponseEntity<?> loadPostsUser(@RequestBody UserIdRequest userIdRequest) {
         Long user_id = userIdRequest.getUser_id();
-        List<PostItem> postItems = postService.getPostsByUid(user_id);
-        return ResponseEntity.ok(postItems);
+        try {
+            List<PostItem> postItems = postService.getPostsByUid(user_id);
+            return ResponseEntity.ok(postItems);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to retrive recipes");
+        }
+    }
+
+    @PostMapping(path = "/savePost")
+    public ResponseEntity<?> saveUserPost(@RequestBody PostItem postItem){
+        try {
+            postService.savePostItem(postItem);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save PostItem");
+        }
     }
 
 
@@ -89,7 +104,6 @@ public class Controller {
         System.out.println(searchString);
         if (searchString != null){
             messageProducer.sendMessageToTopic(userIdRequest);
-            // messageProducer.sendMessageToTopic(userIdRequest);
             List<ResponseMessage> res = new ArrayList<>();
             try {
                 latch.await(6, TimeUnit.SECONDS);

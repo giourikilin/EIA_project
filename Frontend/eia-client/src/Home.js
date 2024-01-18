@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 import './Home.css';
 import SearchBar from './SearchBar';
@@ -11,6 +11,36 @@ const Home = () => {
   const handleInputChange = (term) => {
     setSearchTerm(term);
   };
+
+  useEffect(() => {
+    async function fetchItems() {
+      try {
+        const response = await axios.post("http://localhost:8080/loadposts", {
+          searchTerm: null,
+          user_id: parseInt(localStorage.getItem("user-id"), 10),
+        });
+        if (Array.isArray(response.data)) {
+          const transformedData = response.data.map((item) => ({
+            title: item.title,
+            pic: item.pic,
+            ing: item.ing,
+            vid_url: item.vid_url,
+            coord: { lat: parseFloat(localStorage.getItem("lat")), lng: parseFloat(localStorage.getItem("long")) }
+          }));
+          for (let i = 0; i < transformedData.length; i++) {
+            await new Promise((resolve) => setTimeout(resolve, 800));
+            setPosts((postdata) => [...postdata, transformedData[i]]);
+          }
+        } else {
+          console.error('Received data is not an array or is empty:', response.data);
+        }
+      }
+       catch (err) {
+        alert(err);
+      }
+    }
+    fetchItems();
+  },[]);
 
   const handleButtonClick = async () => {
     try {
@@ -27,7 +57,7 @@ const Home = () => {
       console.log(searchTerm);
       const response = await axios.post("http://localhost:8080/searchPosts", {
         searchTerm: searchTerm,
-        userId: parseInt(localStorage.getItem("user-id"), 10),
+        user_id: parseInt(localStorage.getItem("user-id"), 10),
       });
       if (Array.isArray(response.data)) {
         const newData = response.data.map((item) => ({
@@ -37,7 +67,7 @@ const Home = () => {
           vid_url: item.vid_url,
           coord: { lat: parseFloat(localStorage.getItem("lat")), lng: parseFloat(localStorage.getItem("long")) }
         }));
-        setPosts(postdata => [...postdata, ...newData]);
+        setPosts((postdata) => [...postdata, ...newData]);
       } else {
         console.error('Received data is not an array or is empty:', response.data);
       }
@@ -45,33 +75,6 @@ const Home = () => {
       console.error('Error searching:', error);
     }
   };
-
-  // useEffect(() => {
-  //   async function fetchItems() {
-  //     try {
-  //       const response = await axios.post("http://localhost:8080/loadposts", {
-  //         userid: parseInt(localStorage.getItem("user-id"), 10)
-  //       });
-  //       if (Array.isArray(response.data)) {
-  //         const transformedData = response.data.map((item) => ({
-  //           title: item.title,
-  //           picture: item.picture,
-  //           ingredients: item.ingredients,
-  //           video_url: item.video_url,
-  //           // local_map: item.local_map
-  //         }));
-  //         setPosts(transformedData);
-  //       } else {
-  //         console.error('Received data is not an array or is empty:', response.data);
-  //       }
-  //     }
-  //      catch (err) {
-  //       alert(err);
-  //     }
-  //   }
-
-  //   fetchItems();
-  // },[]);
 
     return (
       <div className="home-page">

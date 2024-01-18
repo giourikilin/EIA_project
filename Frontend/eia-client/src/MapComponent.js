@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 
 const MapComponent = ({ userLocation }) => {
@@ -86,11 +85,7 @@ const MapComponent = ({ userLocation }) => {
             }
           });
         });
-
-
       });
-
-
     }
   }, [userLocation, supermarkets]);
 

@@ -54,13 +54,9 @@ public class YoutubeAdapter {
         try {
             String processed_title = message.getVideo_id().replaceAll("[\\s?.,@$&]+", "");
             ResponseEntity<?> videoResponse = makeYouTubeCall(processed_title);
-            System.out.println(processed_title);
-            
             
             if (videoResponse.getStatusCode() == HttpStatus.OK) {
-                System.out.println(videoResponse.getStatusCode());
                 String respent = (String) videoResponse.getBody();
-                System.out.println(respent);
                 JsonNode jsonNode = objectMapper.readTree(respent);
                 String videoID = jsonNode.get("items").get(0).get("id").get("videoId").asText();
                 List<String> history = message.getHistory();

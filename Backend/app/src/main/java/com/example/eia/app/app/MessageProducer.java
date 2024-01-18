@@ -26,7 +26,6 @@ public class MessageProducer {
     public void sendMessageToTopic(UserIdRequest content) {
         
         String messageId = UUID.randomUUID().toString();
-        // requestMessage = new RequestMessage(messageId, content.getSearchTerm(), content.getLatitude(), content.getLongitude());
         List<String> history = new ArrayList<>();
         history.add(COMPONENT_NAME);
         requestMessage = new RequestMessage(messageId, content.getSearchTerm(), history);

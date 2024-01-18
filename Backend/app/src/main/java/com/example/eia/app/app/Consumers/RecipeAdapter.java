@@ -66,7 +66,7 @@ public class RecipeAdapter {
 
                 if (jsonNode.get("hits").get(0).get("recipe").get("ingredientLines").isArray()){
                     for(JsonNode item : jsonNode.get("hits").get(0).get("recipe").get("ingredientLines")){
-                        ingredients.add(item.asText());
+                        ingredients.add(item.asText()+" ,");
                     }
                 }
                 System.out.println("Food title Recipe consumer from edam"+ title);
