@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+//Test Data Transfer Object (DTO) 
 public class TestDTO {
     private String component;
 }

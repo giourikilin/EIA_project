@@ -21,20 +21,25 @@ import java.util.Collections;
 @Configuration
 public class Config {
 
+    // Configuration bean for RestTemplate
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 
+    // Configuration bean for ActiveMQ ConnectionFactory
     @Bean
     public ConnectionFactory connectionFactory(){
+        // Set up ActiveMQ ConnectionFactory with credentials and broker URL
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin","admin", "tcp://activemq:61616");
         connectionFactory.setTrustedPackages(Collections.singletonList("*"));
         return connectionFactory;
     }
 
+    // Configuration bean for JmsTemplate
     @Bean
     public JmsTemplate jmsTemplate(){
+        // Set up JmsTemplate with the configured ConnectionFactory and other properties
         JmsTemplate jmsTemplate = new JmsTemplate();
         jmsTemplate.setConnectionFactory(connectionFactory());
         jmsTemplate.setDestinationResolver(destinationResolver());
@@ -43,11 +48,13 @@ public class Config {
         return jmsTemplate;
     }
 
+    // Configuration bean for DynamicDestinationResolver based on what a string ends
     @Bean
     DynamicDestinationResolver destinationResolver() {
         return new DynamicDestinationResolver() {
             @Override
             public Destination resolveDestinationName(Session session, String destinationName, boolean pubSubDomain) throws JMSException {
+                // Determine if the destination is a queue or topic based on its name
                 if(destinationName.endsWith("queue")) {
                     pubSubDomain = false;
                 }
@@ -59,17 +66,21 @@ public class Config {
         };
     }
 
+    // Configuration bean for DefaultJmsListenerContainerFactory
     @Bean
     public DefaultJmsListenerContainerFactory defaultJmsListenerContainerFactory(ConnectionFactory connectionFactory) {
+        // Set up DefaultJmsListenerContainerFactory with the configured ConnectionFactory and other properties
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
         factory.setSubscriptionDurable(true);
         return factory;
     }
 
+    // Configuration bean for JmsListenerContainerFactory for Recipe consumer
     @Bean(name = "jmsTCFrecipe")
 	public JmsListenerContainerFactory<?> jmsTCFrecipe(ConnectionFactory connectionFactory, DefaultJmsListenerContainerFactoryConfigurer configurer ) {
-		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+		// Set up JmsListenerContainerFactory with the configured ConnectionFactory and other properties for Recipe consumer
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
 		configurer.configure( factory, connectionFactory );
 		factory.setConnectionFactory(connectionFactory);
         factory.setSubscriptionDurable(true);
@@ -77,8 +88,10 @@ public class Config {
 		return factory;
 	}
 
+    // Configuration bean for JmsListenerContainerFactory for Control Bus
     @Bean(name = "jmsControlBus")
     public JmsListenerContainerFactory<?> jmsControlBus(ConnectionFactory connectionFactory, DefaultJmsListenerContainerFactoryConfigurer configurer ) {
+        // Set up JmsListenerContainerFactory with the configured ConnectionFactory and other properties for Control Bus
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         configurer.configure( factory, connectionFactory );
         factory.setConnectionFactory(connectionFactory);

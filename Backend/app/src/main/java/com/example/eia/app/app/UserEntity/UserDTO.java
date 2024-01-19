@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+//User Data Transfer Object (DTO) 
 public class UserDTO {
     private Long id;
     private String email;

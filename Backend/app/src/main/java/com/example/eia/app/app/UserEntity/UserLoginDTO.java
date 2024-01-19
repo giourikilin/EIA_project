@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
+// User Log in Data Transfer Object (DTO) 
 public class UserLoginDTO {
     private String username;
     private String password;

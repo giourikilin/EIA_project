@@ -1,5 +1,5 @@
 package com.example.eia.app.app.UserEntity;
-
+// Mapper classes from User to UserDTO and reverse
 public class UserMapper {
     public static UserDTO mapToUserDTO(User user){
         return new UserDTO(

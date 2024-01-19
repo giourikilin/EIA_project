@@ -16,6 +16,7 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+// JPA entity class to create a table: user with columns in MySQL
 @Table(name="user")
 public class User {
 

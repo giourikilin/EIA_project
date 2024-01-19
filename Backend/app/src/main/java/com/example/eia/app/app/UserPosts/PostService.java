@@ -13,6 +13,7 @@ public class PostService {
     @Autowired
     private PostsRepo postsRepo;
 
+    // Method to retrive posts of a user from MongoDB
     public List<PostItem> getPostsByUid(Long uid){      
         try {
             return postsRepo.findByUserID(uid);   
@@ -21,6 +22,7 @@ public class PostService {
         }    
     }
 
+    // Method to save recipe objects for a user to MongoDB
     public void savePostItem(PostItem postItem) {
         if(postItem != null){
             postsRepo.save(postItem);

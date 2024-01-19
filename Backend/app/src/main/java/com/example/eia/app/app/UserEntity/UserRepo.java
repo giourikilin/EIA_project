@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @EnableJpaRepositories
 @Repository
+// Spring Data JPA repository interface for MySQL
 public interface UserRepo extends JpaRepository<User, Long> {
     Optional<User> findByUsernameAndPassword(String username, String password);
     User findByUsername(String username);

@@ -13,9 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DataResponse extends Message{
-
     private String message;
     private Long uid;
     private List<String> history = new ArrayList<>();
-
 }

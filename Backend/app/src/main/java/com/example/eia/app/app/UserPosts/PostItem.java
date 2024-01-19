@@ -17,6 +17,7 @@ import java.util.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+// Specifies that instances of this class should be stored as documents in the MongoDB collection named "posts."
 @Document(collection = "posts")
 public class PostItem implements Serializable{
 

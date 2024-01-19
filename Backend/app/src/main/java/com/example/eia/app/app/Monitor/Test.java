@@ -11,7 +11,8 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="test")
+// JPA entity class to create a table: "test" with columns in MySQL 
+@Table(name="test") 
 public class Test {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
